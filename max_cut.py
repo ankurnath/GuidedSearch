@@ -410,7 +410,7 @@ def ls_greedy(adj_matrix, weight_matrix, start_list, end_list,size_constraint):
 
 
 @njit
-def fls_greedy(G,adj_matrix, weight_matrix, start_list, end_list,size_constraint,error_rate):
+def fls_greedy(adj_matrix, weight_matrix, start_list, end_list,size_constraint,error_rate):
 
 
     n=len(start_list)
