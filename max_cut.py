@@ -521,7 +521,7 @@ def fls_greedy(adj_matrix, weight_matrix, start_list, end_list,size_constraint,e
             # delete
             continue_search=True
             curr_score+=merginal_gain[e]
-            merginal_gain[d]=-merginal_gain[e]
+            merginal_gain[e]=-merginal_gain[e]
             for u,weight in zip(adj_matrix[start_list[e]:end_list[e]],weight_matrix[start_list[e]:end_list[e]]):
 
                 merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[e])
