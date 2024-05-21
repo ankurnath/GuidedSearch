@@ -919,7 +919,7 @@ def process_graph(graph_no,arg):
     save_folder=f'data/Maximum Cut/{model}'
     os.makedirs(save_folder,exist_ok=True)
     
-    filename=f'{model}{number_of_nodes}_graph{str(graph_no).zfill(3)}.npy'
+    filename=f'{model}{number_of_nodes}_graph{str(graph_no).zfill(3)}'
     save_file_path=os.path.join(save_folder,filename)
     sparse_matrix = csr_matrix(G)
     save_npz(save_file_path, sparse_matrix)
