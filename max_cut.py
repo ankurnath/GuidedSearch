@@ -139,9 +139,278 @@ def ls_greedy(adj_matrix, weight_matrix, start_list, end_list,size_constraint):
 
     return curr_score,spins,number_of_queries
 
-@njit
-def fls_greedy(adj_matrix, weight_matrix, start_list, end_list,size_constraint,error_rate):
+# # @njit
+# def fls_greedy(adj_matrix, weight_matrix, start_list, end_list,size_constraint,error_rate):
 
+
+
+#     n=len(start_list)
+#     merginal_gain=np.zeros(n)
+#     spins=np.zeros(n)
+
+
+#     number_of_queries=0
+
+#     # Calculate merginal gain for every element
+#     for i in range(n):
+#         number_of_queries+=1
+#         for j,weight in zip(adj_matrix[start_list[i]:end_list[i]],
+#                          weight_matrix[start_list[i]:end_list[i]]):
+
+#             merginal_gain[i]+=weight*(2*spins[i]-1)*(2*spins[j]-1)
+
+#     # an approximation result
+
+#     A_0=np.argmax(merginal_gain)
+#     k=1
+#     curr_score=merginal_gain[A_0]
+
+#     merginal_gain[A_0]=-merginal_gain[A_0]
+
+#     for neighbour,weight in zip(adj_matrix[start_list[A_0]:end_list[A_0]],
+#                      weight_matrix[start_list[A_0]:end_list[A_0]]):
+
+#         merginal_gain[neighbour]+=weight*(2*spins[neighbour]-1)*(2-4*spins[A_0])
+#     spins[A_0]=1-spins[A_0]
+
+#     # SWAP OR FLIP (ADD)
+
+#     continue_search=True
+
+
+#     while continue_search:
+#         best_spins=spins.copy()
+
+#         continue_search=False
+
+#         # EXCHANGE WITH DUMMY
+#         queries=np.zeros(n,dtype=np.int32)
+
+#         if k<size_constraint:
+#             for i in range(n):
+#                 # Simply add an element
+#                 if spins[i] == 0:
+#                     # number_of_queries+=1
+#                     queries[i]=1
+
+#                     if merginal_gain[i]>=(error_rate/size_constraint)*curr_score:
+#                         continue_search=True
+
+#                         curr_score+=merginal_gain[i]
+#                         merginal_gain[i]=-merginal_gain[i]
+
+
+#                         for u,weight in zip(adj_matrix[start_list[i]:end_list[i]],
+#                                          weight_matrix[start_list[i]:end_list[i]]):
+
+#                             merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[i])
+#                         spins[i] = 1-spins[i]
+#                         k+=1
+#                         break
+
+
+#         #SWAP
+#         merginal_gain_copy=np.copy(merginal_gain)
+#         spins_copy=np.copy(spins)
+
+
+#         for a in range(n):
+#             if spins[a]==0:
+#                 break
+
+#         # e_max_merginal_gain=float('-inf')
+#         e_max_merginal_gain=-10000
+#         e_max=None
+#         for e in range(n):
+#             merginal_gain=np.copy(merginal_gain_copy)
+#             spins=np.copy(spins_copy)
+#             if spins[e]==1:
+#                 # number_of_queries+=1
+#                 queries[e]=1
+#                 if merginal_gain[e]>e_max_merginal_gain:
+#                     e_max_merginal_gain=merginal_gain
+#                     e_max=e
+#                 if merginal_gain_copy[a] - merginal_gain_copy[e] >= (error_rate/size_constraint)*curr_score:
+#                     continue_search==True
+#                     new_score=curr_score+merginal_gain[e] # (f(A-e))
+#                     merginal_gain[e]=-merginal_gain[e]
+#                     for u,weight in zip(adj_matrix[start_list[e]:end_list[e]],
+#                                      weight_matrix[start_list[e]:end_list[e]]):
+#                         merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[e])
+#                     spins[e] = 1-spins[e]
+
+#                     curr_score=new_score+merginal_gain[a]
+#                     merginal_gain[a]=-merginal_gain[a]
+                    
+#                     for u,weight in zip(adj_matrix[start_list[a]:end_list[a]],
+#                                     weight_matrix[start_list[a]:end_list[a]]):
+#                         merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[a])
+#                     spins[a] = 1-spins[a]
+
+#                     break
+
+#         # e_max=np.argmax(merginal_gain)
+            
+#         if e_max:
+#             for a in range(n):
+#                 merginal_gain=np.copy(merginal_gain_copy)
+#                 spins=np.copy(spins_copy)
+#                 if spins[a]==0:
+#                     # number_of_queries+=1
+#                     queries[a]=1
+
+
+#                     if merginal_gain_copy[a] - merginal_gain_copy[e_max] >= (error_rate/size_constraint)*curr_score:
+#                         continue_search==True
+#                         new_score=curr_score+merginal_gain[e_max] # (f(A-e))
+#                         merginal_gain[e_max]=-merginal_gain[e_max]
+#                         for u,weight in zip(adj_matrix[start_list[e_max]:end_list[e_max]],
+#                                         weight_matrix[start_list[e_max]:end_list[e_max]]):
+#                             merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[e_max])
+#                         spins[e_max] = 1-spins[e_max]
+
+#                         curr_score=new_score+merginal_gain[a]
+#                         merginal_gain[a]=-merginal_gain[a]
+                        
+#                         for u,weight in zip(adj_matrix[start_list[a]:end_list[a]],
+#                                         weight_matrix[start_list[a]:end_list[a]]):
+#                             merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[a])
+#                         spins[a] = 1-spins[a]
+
+#                         break
+
+
+
+# #         for e in range(n):
+
+# #             if continue_search==True:
+# #                 break
+
+# #             merginal_gain=np.copy(merginal_gain_copy)
+# #             spins=np.copy(spins_copy)
+
+# #             # In the solution set
+# #             if spins[e]==1:
+# # #                 number_of_queries+=1
+# #                 new_score=curr_score+merginal_gain[e] # (f(A-e))
+# #                 merginal_gain[e]=-merginal_gain[e]
+
+
+# #                 for u,weight in zip(adj_matrix[start_list[e]:end_list[e]],
+# #                                      weight_matrix[start_list[e]:end_list[e]]):
+# #                     merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[e])
+# #                 spins[e] = 1-spins[e]
+
+
+# #                 for a in range(n):
+# #                     if spins[a]==0:
+# #                         number_of_queries+=1 # (f(A-e+a))
+# #                         if new_score+merginal_gain[a]-curr_score>=(error_rate/size_constraint)*curr_score:
+
+# #     #                         print(swap)
+# #                             # Only if condition met then update
+# #                             continue_search=True
+# #                             #update
+# #                             curr_score=new_score+merginal_gain[a]
+# #                             merginal_gain[a]=-merginal_gain[a]
+# #                             # for u in range(n):
+# #                             for u,weight in zip(adj_matrix[start_list[a]:end_list[a]],
+# #                                             weight_matrix[start_list[a]:end_list[a]]):
+# #                                 merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[a])
+# #                             spins[a] = 1-spins[a]
+# #                             break
+
+#         # DELETE
+#         if continue_search is False:
+#             merginal_gain=np.copy(merginal_gain_copy)
+#             spins=np.copy(spins_copy)
+
+#             for d in range(n):
+#                 if spins[d]==1 :
+#                     # number_of_queries+=1
+#                     queries[d]=1
+#                     if merginal_gain[d]>=(error_rate/size_constraint**4)*curr_score:
+#                         continue_search=True
+#                         curr_score+=merginal_gain[d]
+#                         merginal_gain[d]=-merginal_gain[d]
+#                         for u,weight in zip(adj_matrix[start_list[d]:end_list[d]],weight_matrix[start_list[d]:end_list[d]]):
+
+#                             merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[d])
+#                         spins[d] = 1-spins[d]
+#                         k-=1
+#                         break
+        
+#         number_of_queries+=np.sum(queries)
+
+
+
+
+#     best_score=curr_score
+#     curr_score=0
+# #     print(number_of_queries)
+
+#     Z=best_spins.copy()
+
+#     spins=np.zeros(n)
+#     merginal_gain=np.zeros(n)
+#     spins=np.zeros(n)
+#     t=0.372
+#     for i in range(n):
+#         for j,weight in zip(adj_matrix[start_list[i]:end_list[i]],
+#                      weight_matrix[start_list[i]:end_list[i]]):
+#             merginal_gain[i]+=weight*(2*spins[i]-1)*(2*spins[j]-1)
+
+
+#     for i in range(1,size_constraint+1):
+#         arg_indices=np.argsort(-merginal_gain)
+
+#         if i<=t*size_constraint:
+
+#             indices = [index for index in arg_indices if spins[index] == 0 and Z[index]==0]
+#         else:
+#             indices = [index for index in arg_indices if spins[index] == 0]
+
+
+#         number_of_queries+=len(indices)
+#         indices=indices[:size_constraint]
+#         len_indices=len(indices)
+
+
+#         add_element=False
+#         for index in indices:
+#             if merginal_gain[index]>0:
+#                 add_element=True
+#                 break
+
+#         if add_element:
+
+
+#             rand_idx=np.random.randint(len_indices)
+#             rand_ele=indices[rand_idx]
+
+#             if merginal_gain[rand_ele]<=0:
+#                 continue
+
+#             curr_score+=merginal_gain[rand_ele]
+
+#             merginal_gain[rand_ele]=-merginal_gain[rand_ele]
+#             for u,weight in zip(adj_matrix[start_list[rand_ele]:end_list[rand_ele]],
+#                             weight_matrix[start_list[rand_ele]:end_list[rand_ele]]):
+
+
+#                 merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[rand_ele])
+#             spins[rand_ele] = 1-spins[rand_ele]
+
+
+#     if best_score<curr_score:
+#         best_spins=spins
+
+
+#     return  max(best_score,curr_score),best_spins,number_of_queries,curr_score,spins
+
+
+@njit
+def fls_greedy(G,adj_matrix, weight_matrix, start_list, end_list,size_constraint,error_rate):
 
 
     n=len(start_list)
@@ -172,26 +441,44 @@ def fls_greedy(adj_matrix, weight_matrix, start_list, end_list,size_constraint,e
 
         merginal_gain[neighbour]+=weight*(2*spins[neighbour]-1)*(2-4*spins[A_0])
     spins[A_0]=1-spins[A_0]
+    # check_max_cut(G,spins,curr_score)
 
     # SWAP OR FLIP (ADD)
 
     continue_search=True
-
+    queries= np.zeros(n,dtype=np.int32)
+    previous_score=curr_score
 
     while continue_search:
+
+        # if previous_score>curr_score:
+        #     raise ValueError('Wrong update')
+        #     print(spins)
+        #     break
+        # previous_score=curr_score
+
+        # print(curr_score)
         best_spins=spins.copy()
 
         continue_search=False
+        # queries=S.copy()
+        for i in range(n):
+            queries[i]=0
 
         # EXCHANGE WITH DUMMY
+        
+        
 
         if k<size_constraint:
             for i in range(n):
-
+                # Simply add an element
+                
                 if spins[i] == 0:
-                    number_of_queries+=1
+                    # number_of_queries+=1
+                    queries[i]=1
 
                     if merginal_gain[i]>=(error_rate/size_constraint)*curr_score:
+                        # print('Simply adding an element')
                         continue_search=True
 
                         curr_score+=merginal_gain[i]
@@ -208,57 +495,110 @@ def fls_greedy(adj_matrix, weight_matrix, start_list, end_list,size_constraint,e
 
 
         #SWAP
-        merginal_gain_copy=np.copy(merginal_gain)
-        spins_copy=np.copy(spins)
+        # merginal_gain_copy=np.copy(merginal_gain)
+        # spins_copy=np.copy(spins)
+        e_min_merginal_gain=10000
+        e_min=0
+             
+        # for e in range(n):
+        #     if spins[e]==1 and merginal_gain[e]:
 
-        for e in range(n):
 
-            if continue_search==True:
+
+
+        a=-1
+        for i in range(n):
+            if spins[i]==0:
+                a=i
                 break
 
-            merginal_gain=np.copy(merginal_gain_copy)
-            spins=np.copy(spins_copy)
+        # e_max_merginal_gain=float('-inf')
+        if a >=0 and continue_search is False:
+            e_max_merginal_gain=-10000
+            e_max=-1
+            for e in range(n):
+                # merginal_gain=np.copy(merginal_gain_copy)
+                # spins=np.copy(spins_copy)
+                
+                if spins[e]==1:
+                    # number_of_queries+=1
+                    queries[e]=1
+                    if merginal_gain[e]>e_max_merginal_gain:
+                        e_max_merginal_gain=merginal_gain[e]
+                        e_max=e
+                    if merginal_gain[a] + merginal_gain[e] >= (error_rate/size_constraint)*curr_score:
+                    # if merginal_gain[e] - merginal_gain[a] >= (error_rate/size_constraint)*curr_score:
+                        continue_search=True
+                        # print('Swap first step')
+                        # print(f'Adding {a} and Removing {e}')
+                        # print('merginal gain a',merginal_gain[a])
+                        # print('merginal gain e',merginal_gain[e])
+                        
+                        new_score=curr_score+merginal_gain[e] # (f(A-e))
+                        merginal_gain[e]=-merginal_gain[e]
+                        for u,weight in zip(adj_matrix[start_list[e]:end_list[e]],
+                                        weight_matrix[start_list[e]:end_list[e]]):
+                            merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[e])
+                        spins[e] = 1-spins[e]
 
-            # In the solution set
-            if spins[e]==1:
-#                 number_of_queries+=1
-                new_score=curr_score+merginal_gain[e] # (f(A-e))
-                merginal_gain[e]=-merginal_gain[e]
+                        curr_score=new_score+merginal_gain[a]
+                        merginal_gain[a]=-merginal_gain[a]
+                        
+                        for u,weight in zip(adj_matrix[start_list[a]:end_list[a]],
+                                        weight_matrix[start_list[a]:end_list[a]]):
+                            merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[a])
+                        spins[a] = 1-spins[a]
+
+                        break
+
+        # e_max=np.argmax(merginal_gain)
+            
+        if  continue_search is False and e_max >-1:
+            for a in range(n):
+                if spins[a]==0:
+                    # number_of_queries+=1
+                    queries[a]=1
 
 
-                for u,weight in zip(adj_matrix[start_list[e]:end_list[e]],
-                                     weight_matrix[start_list[e]:end_list[e]]):
-                    merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[e])
-                spins[e] = 1-spins[e]
+                    # if merginal_gain[a] - merginal_gain[e_max] >= (error_rate/size_constraint)*curr_score:
+                    if merginal_gain[e_max] + merginal_gain[a] >= (error_rate/size_constraint)*curr_score:
+                        
+                        # print('Swap second step')
+                        # print('continue search',continue_search)
+                        # print(f'Adding {a} and Removing {e_max}')
+                        # print('merginal gain a',merginal_gain[a])
+                        # print('merginal gain e',merginal_gain[e_max])
+                        continue_search=True
+                        new_score=curr_score+merginal_gain[e_max] # (f(A-e))
+                        merginal_gain[e_max]=-merginal_gain[e_max]
+                        for u,weight in zip(adj_matrix[start_list[e_max]:end_list[e_max]],
+                                        weight_matrix[start_list[e_max]:end_list[e_max]]):
+                            merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[e_max])
+                        spins[e_max] = 1-spins[e_max]
+
+                        curr_score=new_score+merginal_gain[a]
+                        merginal_gain[a]=-merginal_gain[a]
+                        
+                        for u,weight in zip(adj_matrix[start_list[a]:end_list[a]],
+                                        weight_matrix[start_list[a]:end_list[a]]):
+                            merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[a])
+                        spins[a] = 1-spins[a]
+
+                        break
 
 
-                for a in range(n):
-                    if spins[a]==0:
-                        number_of_queries+=1 # (f(A-e+a))
-                        if new_score+merginal_gain[a]-curr_score>=(error_rate/size_constraint)*curr_score:
-
-    #                         print(swap)
-                            # Only if condition met then update
-                            continue_search=True
-                            #update
-                            curr_score=new_score+merginal_gain[a]
-                            merginal_gain[a]=-merginal_gain[a]
-                            # for u in range(n):
-                            for u,weight in zip(adj_matrix[start_list[a]:end_list[a]],
-                                            weight_matrix[start_list[a]:end_list[a]]):
-                                merginal_gain[u]+=weight*(2*spins[u]-1)*(2-4*spins[a])
-                            spins[a] = 1-spins[a]
-                            break
 
         # DELETE
         if continue_search is False:
-            merginal_gain=np.copy(merginal_gain_copy)
-            spins=np.copy(spins_copy)
+            # merginal_gain=np.copy(merginal_gain_copy)
+            # spins=np.copy(spins_copy)
 
             for d in range(n):
                 if spins[d]==1 :
-                    number_of_queries+=1
-                    if merginal_gain[d]>=(error_rate/size_constraint**4)*curr_score:
+                    # print('Delete')
+                    # number_of_queries+=1
+                    queries[d]=1
+                    if merginal_gain[d]>=(error_rate/size_constraint)*curr_score:
                         continue_search=True
                         curr_score+=merginal_gain[d]
                         merginal_gain[d]=-merginal_gain[d]
@@ -268,6 +608,9 @@ def fls_greedy(adj_matrix, weight_matrix, start_list, end_list,size_constraint,e
                         spins[d] = 1-spins[d]
                         k-=1
                         break
+        
+        # number_of_queries+=np.sum(queries)
+        # check_max_cut(G,spins,curr_score)
 
 
 
@@ -628,7 +971,7 @@ def process_graph(graph_no,arg):
 if __name__ == "__main__":
 
     parser = ArgumentParser()
-    parser.add_argument("--model", type=str,default="BA", help="Distribution of dataset")
+    parser.add_argument("--model", type=str,default="ER", help="Distribution of dataset")
     parser.add_argument("--n", type=int, default=10000, help="the number of nodes")
     parser.add_argument("--m", type=int, default=4, help="m")
     parser.add_argument("--p", type=int, default=0.001, help="p")
