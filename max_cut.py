@@ -17,6 +17,7 @@ import random
 import networkx as nx
 import time
 from multiprocessing import Process
+from scipy.sparse import csr_matrix,save_npz,load_npz
 
 """# Helper functions"""
 
@@ -574,9 +575,12 @@ def process_graph(graph_no,arg):
 
     save_folder=f'data/Maximum Cut/{model}'
     os.makedirs(save_folder,exist_ok=True)
+    
     filename=f'{model}{number_of_nodes}_graph{str(graph_no).zfill(3)}.npy'
-    file_path=os.path.join(save_folder,filename)
-    np.save(file_path,G)
+    save_file_path=os.path.join(save_folder,filename)
+    sparse_matrix = csr_matrix(G)
+    save_npz(save_file_path, sparse_matrix)
+    # np.save(file_path,G)
     adj_matrix, weight_matrix, start_list, end_list = flatten_graph(G)
 
 
